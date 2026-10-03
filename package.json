@@ -1,0 +1,27 @@
+{
+  "name": "@laowang_shanxi/node-red-contrib-udp-request",
+  "version": "0.1.0",
+  "description": "UDP-Request node: send UDP datagram and wait for reply, single output",
+  "author": "",
+  "license": "MIT",
+  "node-red": {
+    "nodes": {
+      "udp-request": "nodes/udp-request.js"
+    }
+  },
+  "keywords": [
+    "node-red",
+    "udp",
+    "udp-request",
+    "network"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
+

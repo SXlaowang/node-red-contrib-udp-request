@@ -1,0 +1,74 @@
+<script type="text/x-red" data-template-name="udp-request">
+    <div class="form-row">
+        <label for="node-input-host"><i class="fa fa-globe"></i> Host</label>
+        <input type="text" id="node-input-host" placeholder="Overridden by msg.ip">
+    </div>
+    <div class="form-row">
+        <label for="node-input-port"><i class="fa fa-anchor"></i> Port</label>
+        <input type="text" id="node-input-port" placeholder="Overridden by msg.port">
+    </div>
+    <div class="form-row">
+        <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Timeout(ms)</label>
+        <input type="number" id="node-input-timeout">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Node name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="udp-request">
+<p>UDP?Request node: sends UDP datagram and waits for reply. Single output only.</p>
+<h3>Inputs</h3>
+<dl class="message-properties">
+<dt>msg.ip <span class="property-type">string</span></dt>
+<dd>Target host IP, overrides node Host setting.</dd>
+<dt>msg.port <span class="property-type">number</span></dt>
+<dd>Target UDP port, overrides node Port setting.</dd>
+<dt>msg.payload <span class="property-type">string | Buffer | number | boolean</span></dt>
+<dd>Data to send. String / number / boolean will be converted to UTF?8 bytes. If payload is a Buffer, raw binary bytes are sent without conversion.</dd>
+<dt>msg.timeout <span class="property-type">number</span></dt>
+<dd>Timeout in milliseconds, overrides node timeout setting.</dd>
+</dl>
+
+<h3>Outputs</h3>
+<dl class="message-properties">
+<dt>payload <span class="property-type">Buffer|null</span></dt>
+<dd>Raw reply Buffer on success; <code>null</code> on timeout or error.</dd>
+<dt>udp_status <span class="property-type">string</span></dt>
+<dd>Status code: <code>ok</code> / <code>timeout</code> / <code>param_error</code> / <code>socket_error</code> / <code>send_error</code>.</dd>
+<dt>response <span class="property-type">string|null</span></dt>
+<dd>UTF?8 decoded reply text. Returns hex string prefixed with <code>decode_fail:</code> if decoding fails. <code>null</code> for timeout or error.</dd>
+<dt>rinfo <span class="property-type">object</span></dt>
+<dd>Remote peer address & port information, only present when udp_status = ok.</dd>
+<dt>error <span class="property-type">string</span></dt>
+<dd>Human?readable error message, only present for error conditions.</dd>
+</dl>
+
+<h3>Notes</h3>
+<ul>
+<li>Pass a Buffer as payload if you need to transmit custom binary frames; no further conversion will be applied.</li>
+<li>Plain JavaScript array <code>[0x01,0x02]</code> is NOT a Buffer; use <code>Buffer.from([0x01,0x02])</code> for binary data.</li>
+</ul>
+</script>
+
+<script type="text/javascript">
+RED.nodes.registerType('udp-request',{
+    category: 'network',
+    color: '#a6bbcf',
+    defaults: {
+        host: {value:""},
+        port: {value:""},
+        timeout: {value:1000}
+    },
+    inputs:1,
+    outputs:1,
+    icon: "database.png",
+    label: function() {
+        return this.name||"udp-request";
+    },
+    labelStyle: function() {
+        return this.name?"node_label_italic":"";
+    }
+});
+</script>
